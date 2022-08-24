@@ -6,7 +6,8 @@ import {
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import helmet from '@fastify/helmet';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { MikroORM } from '@mikro-orm/core';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,6 +20,11 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+    prefix: 'api/',
+  });
 
   // Starts listening for shutdown hooks
   app.enableShutdownHooks();
@@ -41,6 +47,9 @@ async function bootstrap() {
       },
     },
   });
+
+  await app.get(MikroORM).getSchemaGenerator().ensureDatabase();
+  await app.get(MikroORM).getSchemaGenerator().updateSchema();
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

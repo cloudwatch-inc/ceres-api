@@ -787,6 +787,14 @@
     "@mikro-orm/knex" "^5.3.1"
     pg "8.7.3"
 
+"@mikro-orm/reflection@^5.3.1":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/reflection/-/reflection-5.3.1.tgz#dd7bb628f6e2fa303cfc980ef274b49a2e3e9b0b"
+  integrity sha512-IhdGyLaBseYQr90wP7xadpkBQjr2tr7BDsdU7Ro1KXOb2k0NP9Gwso0vUPyOW9Smn7+usokba83AlFqDEMnRHQ==
+  dependencies:
+    globby "11.0.4"
+    ts-morph "15.1.0"
+
 "@mikro-orm/seeder@^5.3.1":
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/@mikro-orm/seeder/-/seeder-5.3.1.tgz#48e6282b52797e3ad2b18b5c80c6af33d2a65c21"
@@ -5291,7 +5299,7 @@ ts-loader@^9.2.3:
     micromatch "^4.0.0"
     semver "^7.3.4"
 
-ts-morph@^15.1.0:
+ts-morph@15.1.0, ts-morph@^15.1.0:
   version "15.1.0"
   resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-15.1.0.tgz#53deea5296d967ff6eba8f15f99d378aa7074a4e"
   integrity sha512-RBsGE2sDzUXFTnv8Ba22QfeuKbgvAGJFuTN7HfmIRUkgT/NaVLfDM/8OFm2NlFkGlWEXdpW5OaFIp1jvqdDuOg==

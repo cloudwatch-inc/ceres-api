@@ -1,8 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignupRequestDto } from './dto';
 
-@Controller('auth')
+@ApiTags('Authentication')
+@Controller({ path: 'auth', version: 'v1' })
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -13,6 +15,7 @@ export class AuthController {
 
   @Post('signup')
   signUp(@Body() payload: SignupRequestDto) {
+    console.log(payload);
     return this.authService.signUp(payload);
   }
 }
