@@ -1,5 +1,6 @@
 import { UserRole } from '@common/enum';
 import { Entity, Property, Enum } from '@mikro-orm/core';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 import { BaseEntity } from './BaseEntity';
 
@@ -15,15 +16,17 @@ export class User extends BaseEntity {
   is_active = true;
 
   @Enum(() => UserRole)
-  role = UserRole.USER;
+  role = UserRole.CLIENT;
 
   @Property({ hidden: true })
   password!: string;
 
-  constructor(email: string, user_name: string, password: string) {
+  @Property({ hidden: true })
+  @ApiHideProperty()
+  hashed_refresh_token?: string;
+
+  constructor(payload: Partial<User>) {
     super();
-    this.email = email;
-    this.user_name = user_name;
-    this.password = password;
+    Object.assign(this, payload);
   }
 }

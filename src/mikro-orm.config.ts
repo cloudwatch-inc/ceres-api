@@ -18,11 +18,10 @@ const MikroOrmConfig: Options = {
   password: configService.get('POSTGRES_PASSWORD'),
   host: configService.get('POSTGRES_HOST'),
   port: configService.get('POSTGRES_PORT'),
-  debug: true,
   logger: logger.log.bind(logger),
   metadataProvider: TsMorphMetadataProvider,
   migrations: {
-    path: path.join(__dirname, './migrations'),
+    path: path.join('migrations'),
     glob: '!(*.d).{js,ts}', // how to match migration files (all .js and .ts files, but not .d.ts)
     transactional: true, // wrap each migration in a transaction
     disableForeignKeys: true, // wrap statements with `set foreign_key_checks = 0` or equivalent

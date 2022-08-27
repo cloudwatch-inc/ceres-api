@@ -7,8 +7,8 @@ export abstract class BaseEntity {
   id = uuidv4();
 
   @Property()
-  createdAt = new Date();
+  created_at = new Date();
 
   @Property({ onUpdate: () => new Date() })
-  updatedAt = new Date();
+  updated_at = new Date();
 }

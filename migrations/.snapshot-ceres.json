@@ -64,12 +64,18 @@
         },
         "role": {
           "name": "role",
-          "type": "smallint",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "user",
+          "enumItems": [
+            "admin",
+            "client",
+            "professional",
+            "company",
+            "business"
+          ],
           "mappedType": "enum"
         },
         "password": {
@@ -79,6 +85,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "string"
+        },
+        "hashed_refresh_token": {
+          "name": "hashed_refresh_token",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "string"
         }
       },

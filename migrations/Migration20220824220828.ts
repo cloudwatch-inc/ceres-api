@@ -1,13 +1,13 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20220824151724 extends Migration {
+export class Migration20220824220828 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('alter table "users" drop constraint if exists "users_role_check";');
 
     this.addSql('alter table "users" alter column "role" drop default;');
     this.addSql('alter table "users" alter column "role" type text using ("role"::text);');
-    this.addSql('alter table "users" add constraint "users_role_check" check ("role" in (\'user\', \'admin\', \'professional\'));');
+    this.addSql('alter table "users" add constraint "users_role_check" check ("role" in (\'admin\', \'client\', \'professional\', \'company\', \'business\'));');
   }
 
   async down(): Promise<void> {
