@@ -5,7 +5,7 @@ import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { User } from '@core';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorator';
-import { SignupRequestDto } from './dto';
+import { SigninRequestDto, SignupRequestDto } from './dto';
 import { JwtAuthGuard, LocalGuard } from './guard';
 
 @ApiTags('Authentication')
@@ -14,8 +14,16 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signin')
-  signin() {
-    return 'true';
+  @ApiConsumes('application/x-www-form-urlencoded')
+  @UseGuards(LocalGuard)
+  async signin(
+    @Body() logInDto: SigninRequestDto,
+    @Res({ passthrough: true }) reply: FastifyReply,
+  ): Promise<User> {
+    const res = await this.authService.signin(logInDto as User);
+
+    reply.header('Set-Cookie', [res.accessCookie, res.refreshCookie]);
+    return reply.send(res.user);
   }
 
   @Post('signup')

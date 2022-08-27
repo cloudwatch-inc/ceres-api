@@ -19,8 +19,11 @@ export class AuthService {
     private readonly usersService: UserService,
   ) {}
 
-  async signin() {
-    return true;
+  async signin(user: User): Promise<any> {
+    const accessCookie = await this.getAccessCookie(user);
+    const refreshCookie = await this.getRefreshCookie(user.id);
+
+    return { user, accessCookie, refreshCookie };
   }
 
   async signupAndAuthenticate(
