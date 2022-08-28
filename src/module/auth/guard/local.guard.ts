@@ -1,6 +1,7 @@
-import { UserService } from '@module/user/user.service';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
+
+import { UserService } from '@module/user';
 
 @Injectable()
 export class LocalGuard implements CanActivate {
@@ -14,6 +15,7 @@ export class LocalGuard implements CanActivate {
       const { email, password } = req.body;
       const user = this.usersService.getAuthenticated(email, password);
       if (!user) return false;
+
       req.user = user;
       return true;
     } catch (e) {

@@ -1,7 +1,7 @@
 import { User } from '@core';
 
-export interface ISignupResponse {
-  user: User;
+export interface IAuthResponse {
+  user?: User;
   accessCookie: string;
   refreshCookie: string;
 }

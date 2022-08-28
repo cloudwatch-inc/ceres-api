@@ -69,6 +69,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'client'",
           "enumItems": [
             "admin",
             "client",
@@ -100,6 +101,15 @@
       "name": "users",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "keyName": "users_id_index",
+          "primary": false,
+          "unique": false
+        },
         {
           "columnNames": [
             "email"

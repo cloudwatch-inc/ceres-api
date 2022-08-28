@@ -5,7 +5,7 @@ export class DbException extends HttpException {
     if (+code === HttpStatus.CONFLICT) {
       super(
         {
-          status_code: HttpStatus.CONFLICT,
+          statusCode: HttpStatus.CONFLICT,
           error: 'Conflict',
           message: 'Username or Email already exists',
         },

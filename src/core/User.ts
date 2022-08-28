@@ -10,20 +10,20 @@ export class User extends BaseEntity {
   email!: string;
 
   @Property({ unique: true })
-  user_name!: string;
+  userName!: string;
 
   @Property()
-  is_active = true;
+  isActive = true;
 
-  @Enum(() => UserRole)
-  role = UserRole.CLIENT;
+  @Enum({ items: () => UserRole, default: UserRole.CLIENT })
+  role!: UserRole;
 
   @Property({ hidden: true })
   password!: string;
 
   @Property({ hidden: true })
   @ApiHideProperty()
-  hashed_refresh_token?: string;
+  hashedRefreshToken?: string;
 
   constructor(payload: Partial<User>) {
     super();

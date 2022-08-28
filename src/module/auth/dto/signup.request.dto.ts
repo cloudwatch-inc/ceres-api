@@ -1,4 +1,12 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { UserRole } from '@common/enum';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Matches,
+  MinLength,
+} from 'class-validator';
 
 export class SignupRequestDto {
   @IsString()
@@ -14,5 +22,13 @@ export class SignupRequestDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
-  user_name: string;
+  userName: string;
+
+  @Matches(
+    `${Object.values(UserRole)
+      .filter((v) => typeof v !== 'number')
+      .join('|')}`,
+  )
+  @IsOptional()
+  role?: UserRole;
 }

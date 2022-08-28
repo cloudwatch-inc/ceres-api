@@ -1,1 +1,1 @@
-export * from './signup-response.interface';
+export * from './auth.interface';

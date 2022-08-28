@@ -5,10 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 
 import { User } from '@core';
-import { UserService } from '@module/user/user.service';
 import { SignupRequestDto } from './dto';
 import { Environment } from '@common/config';
-import { ISignupResponse } from './interface';
+import { IAuthResponse } from './interface';
+import { UserService } from '@module/user';
 
 @Injectable()
 export class AuthService {
@@ -16,19 +16,18 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly usersService: UserService,
   ) {}
 
-  async signin(user: User): Promise<any> {
+  async signin(user: User): Promise<IAuthResponse> {
     const accessCookie = await this.getAccessCookie(user);
     const refreshCookie = await this.getRefreshCookie(user.id);
 
-    return { user, accessCookie, refreshCookie };
+    return { accessCookie, refreshCookie };
   }
 
   async signupAndAuthenticate(
     payload: SignupRequestDto,
-  ): Promise<ISignupResponse> {
+  ): Promise<IAuthResponse> {
     const user = await this.userService.create({
       ...payload,
       password: await argon.hash(payload.password),
@@ -41,7 +40,7 @@ export class AuthService {
   }
 
   async getCookiesForLogOut(userId: string): Promise<string[]> {
-    await this.usersService.removeRefreshToken(userId);
+    await this.userService.removeRefreshToken(userId);
     const sameSiteSecure =
       this.configService.get('NODE_ENV') === Environment.Production
         ? 'SameSite=None; Secure'
@@ -70,7 +69,7 @@ export class AuthService {
     }`;
   }
 
-  async getRefreshCookie(userId: string): Promise<string> {
+  async getRefreshCookie(userId: number): Promise<string> {
     const payload = { id: userId };
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
@@ -78,7 +77,7 @@ export class AuthService {
         'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
       )}s`,
     });
-    await this.usersService.saveRefreshToken(refreshToken, userId);
+    await this.userService.saveRefreshToken(refreshToken, userId);
 
     return `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${this.configService.get(
       'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
@@ -99,12 +98,12 @@ export class AuthService {
     const payload = this.jwtService.verify(token, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
     });
-    const user = await this.usersService.findById(payload.id);
-    if (!user.hashed_refresh_token) {
-      throw new BadRequestException('refresh_token_not_found');
+    const user = await this.userService.findById(payload.id);
+    if (!user.hashedRefreshToken) {
+      throw new BadRequestException();
     }
     const isRefreshTokenMatching = await argon.verify(
-      user.hashed_refresh_token,
+      user.hashedRefreshToken,
       token,
     );
     if (!isRefreshTokenMatching) throw new BadRequestException();

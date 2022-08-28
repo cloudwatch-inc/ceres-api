@@ -1,5 +1,12 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { FastifyReply } from 'fastify';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 import { User } from '@core';
@@ -17,13 +24,14 @@ export class AuthController {
   @ApiConsumes('application/x-www-form-urlencoded')
   @UseGuards(LocalGuard)
   async signin(
-    @Body() logInDto: SigninRequestDto,
+    @CurrentUser() user: User,
+    @Body() payload: SigninRequestDto,
     @Res({ passthrough: true }) reply: FastifyReply,
   ): Promise<User> {
-    const res = await this.authService.signin(logInDto as User);
+    const res = await this.authService.signin(user);
 
     reply.header('Set-Cookie', [res.accessCookie, res.refreshCookie]);
-    return reply.send(res.user);
+    return reply.send(user);
   }
 
   @Post('signup')
@@ -38,14 +46,16 @@ export class AuthController {
     return reply.send(res.user);
   }
 
+  @HttpCode(204)
   @Post('signout')
   @UseGuards(JwtAuthGuard)
   async signout(
     @CurrentUser() user: User,
     @Res({ passthrough: true }) reply: FastifyReply,
   ): Promise<void> {
-    console.log({ user });
     const logOutCookies = await this.authService.getCookiesForLogOut(user.id);
     reply.header('Set-Cookie', logOutCookies);
+
+    return reply.redirect('/test');
   }
 }
