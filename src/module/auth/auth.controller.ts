@@ -20,6 +20,7 @@ import { JwtAuthGuard, LocalGuard } from './guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @HttpCode(200)
   @Post('signin')
   @ApiConsumes('application/x-www-form-urlencoded')
   @UseGuards(LocalGuard)

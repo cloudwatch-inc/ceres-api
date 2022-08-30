@@ -6,6 +6,7 @@ import * as argon from 'argon2';
 import { DbException, InvalidCredentialsException } from '@common/exception';
 import { User } from '@core';
 import { CreateUserRequestDto } from './dto';
+import { IUserAuthenticate } from './interface';
 
 @Injectable()
 export class UserService {
@@ -41,6 +42,14 @@ export class UserService {
     return user;
   }
 
+  async findByUserName(userName: string): Promise<User> {
+    const user = await this.em.findOne(User, { userName });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
+  }
+
   async findById(id: number): Promise<User> {
     const user = await this.userRepository.findOne(id);
     if (!user) {
@@ -64,8 +73,12 @@ export class UserService {
     await this.userRepository.persistAndFlush(user);
   }
 
-  async getAuthenticated(email: string, password: string): Promise<User> {
-    const user = await this.findByEmail(email);
+  async getAuthenticated(payload: IUserAuthenticate): Promise<User> {
+    const { email, password, userName } = payload;
+    const user = email
+      ? await this.findByEmail(email)
+      : await this.findByUserName(userName);
+
     const isRightPassword = await argon.verify(user.password, password);
     if (!isRightPassword) {
       throw new InvalidCredentialsException();
