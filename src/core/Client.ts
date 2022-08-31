@@ -9,16 +9,16 @@ export class Client extends BaseEntity {
   firstName!: string;
 
   @Property({ length: 40 })
-  middleName!: string;
+  middleName?: string;
 
   @Property({ length: 40 })
   lastName!: string;
 
   @Property({ columnType: 'smallint' })
-  age!: string;
+  age!: number;
 
   @Property({ columnType: 'date' })
-  bod!: string;
+  bod!: Date;
 
   @Property({ length: 40 })
   address_unit?: string;

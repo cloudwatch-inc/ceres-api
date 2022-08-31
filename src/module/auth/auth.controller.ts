@@ -15,7 +15,7 @@ import { CurrentUser } from './decorator';
 import { SigninRequestDto, SignupRequestDto } from './dto';
 import { JwtAuthGuard, LocalGuard } from './guard';
 
-@ApiTags('Authentication')
+@ApiTags('auth')
 @Controller({ path: 'auth', version: 'v1' })
 export class AuthController {
   constructor(private authService: AuthService) {}
