@@ -15,6 +15,9 @@ export class User extends BaseEntity {
   @Property()
   isActive = true;
 
+  @Property()
+  isProfileComplete = false;
+
   @Enum({ items: () => UserRole, default: UserRole.CLIENT })
   role!: UserRole;
 

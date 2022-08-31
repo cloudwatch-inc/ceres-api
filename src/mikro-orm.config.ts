@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 
-import { BaseEntity, User } from '@core';
+import { BaseEntity, Client, User } from '@core';
 import * as path from 'path';
 import { TSMigrationGenerator } from '@mikro-orm/migrations';
 
@@ -11,7 +11,7 @@ const logger = new Logger('MikroORM');
 const configService = new ConfigService();
 
 const MikroOrmConfig: Options = {
-  entities: [User, BaseEntity],
+  entities: [User, BaseEntity, Client],
   type: 'postgresql',
   dbName: configService.get('POSTGRES_DB'),
   user: configService.get('POSTGRES_USER'),
