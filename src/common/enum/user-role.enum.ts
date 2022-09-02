@@ -1,7 +1,7 @@
 export enum UserRole {
   ADMIN = 'admin',
   CLIENT = 'client',
-  PROFESSIONAL = 'professional',
+  WORKER = 'worker',
   COMPANY = 'company',
-  BUSINESS = 'business',
+  AGENCY = 'agency',
 }

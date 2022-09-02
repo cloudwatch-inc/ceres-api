@@ -1,4 +1,10 @@
-import { Cascade, Entity, OneToOne, Property } from '@mikro-orm/core';
+import {
+  Entity,
+  IdentifiedReference,
+  OneToOne,
+  Property,
+  Reference,
+} from '@mikro-orm/core';
 
 import { BaseEntity } from './BaseEntity';
 import { User } from './User';
@@ -50,12 +56,26 @@ export class Client extends BaseEntity {
   @Property()
   coverPhoto?: string;
 
-  @OneToOne({ cascade: [Cascade.ALL], owner: true })
-  user?: User;
+  @OneToOne({
+    entity: () => User,
+    inversedBy: 'client',
+    owner: true,
+    wrappedReference: true,
+  })
+  user!: IdentifiedReference<User>;
 
   @Property({ persist: false })
   getFullName() {
     return `${this.firstName} ${this.lastName}`;
+  }
+
+  async getUser() {
+    const user = await this.user.load();
+    return user;
+  }
+
+  setUser(userId: string) {
+    this.user = Reference.createFromPK(User, userId);
   }
 
   constructor(payload: Partial<Client>) {

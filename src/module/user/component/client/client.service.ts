@@ -1,11 +1,8 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
-import { Client, User } from '@core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
+
+import { Client } from '@core';
 import { DbException } from '@common/exception';
 import { CreateClientRequestDto } from './dto';
 
@@ -21,9 +18,7 @@ export class ClientService {
     const client = await this.clientRepository.findOne({
       user: { id: userId },
     });
-    if (!Boolean(client)) {
-      throw new NotFoundException();
-    }
+
     return client;
   }
 
@@ -39,11 +34,11 @@ export class ClientService {
 
     try {
       const client = new Client(payload);
-      client.user = this.em.getReference(User, userId);
+      client.setUser(userId);
       await this.clientRepository.persistAndFlush(client);
       return client;
     } catch (e) {
-      throw new DbException(e);
+      throw new DbException();
     }
   }
 }

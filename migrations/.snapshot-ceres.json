@@ -82,9 +82,9 @@
           "enumItems": [
             "admin",
             "client",
-            "professional",
+            "worker",
             "company",
-            "business"
+            "agency"
           ],
           "mappedType": "enum"
         },
@@ -333,7 +333,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "string"
         }
       },
@@ -380,7 +380,6 @@
             "id"
           ],
           "referencedTableName": "public.users",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

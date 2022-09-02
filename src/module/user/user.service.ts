@@ -35,7 +35,11 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.em.findOne(User, { email });
+    const user = await this.em.findOne(
+      User,
+      { email },
+      { populate: ['client'] },
+    );
     if (!user) {
       throw new NotFoundException();
     }
@@ -43,7 +47,11 @@ export class UserService {
   }
 
   async findByUserName(userName: string): Promise<User> {
-    const user = await this.em.findOne(User, { userName });
+    const user = await this.em.findOne(
+      User,
+      { userName },
+      { populate: ['client'] },
+    );
     if (!user) {
       throw new NotFoundException();
     }
@@ -51,7 +59,9 @@ export class UserService {
   }
 
   async findById(id: number): Promise<User> {
-    const user = await this.userRepository.findOne(id);
+    const user = await this.userRepository.findOne(id, {
+      populate: ['client'],
+    });
     if (!user) {
       throw new NotFoundException();
     }

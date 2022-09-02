@@ -4,7 +4,7 @@ import { MikroOrmFramework } from '@framework';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { AuthModule } from '@module/auth';
-import { ClientService } from './child/client';
+import { ClientService } from './component/client';
 
 @Module({
   imports: [MikroOrmFramework, forwardRef(() => AuthModule)],

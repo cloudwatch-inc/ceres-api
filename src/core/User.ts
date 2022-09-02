@@ -1,8 +1,16 @@
 import { UserRole } from '@common/enum';
-import { Entity, Property, Enum } from '@mikro-orm/core';
+import {
+  Entity,
+  Property,
+  Enum,
+  OneToOne,
+  IdentifiedReference,
+  Reference,
+} from '@mikro-orm/core';
 import { ApiHideProperty } from '@nestjs/swagger';
 
 import { BaseEntity } from './BaseEntity';
+import { Client } from './Client';
 
 @Entity({ tableName: 'users' })
 export class User extends BaseEntity {
@@ -27,6 +35,17 @@ export class User extends BaseEntity {
   @Property({ hidden: true })
   @ApiHideProperty()
   hashedRefreshToken?: string;
+
+  @OneToOne({ entity: () => Client, mappedBy: 'user', wrappedReference: true })
+  client: IdentifiedReference<Client>;
+
+  getClient() {
+    return this.client.load();
+  }
+
+  setClient(clientId: string) {
+    this.client = Reference.createFromPK(Client, clientId);
+  }
 
   constructor(payload: Partial<User>) {
     super();

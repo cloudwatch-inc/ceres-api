@@ -13,8 +13,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { User } from '@core';
 import { CurrentUser } from '@module/auth/decorator';
 import { JwtAuthGuard } from '@module/auth/guard';
-import { CreateClientRequestDto } from './child/client/dto';
-import { ClientService } from './child/client';
+import { CreateClientRequestDto } from './component/client/dto';
+import { ClientService } from './component/client';
 
 @ApiTags('users')
 @Controller({ path: 'users', version: 'v1' })
@@ -27,11 +27,11 @@ export class UserController {
 
   @Get('me')
   public async getCurrentUser(@CurrentUser() currentUser: User) {
-    const user = this.userService.findByEmail(currentUser.email);
+    const user = await this.userService.findByEmail(currentUser.email);
     return user;
   }
 
-  @Post('client')
+  @Post()
   public async createClient(
     @CurrentUser() currentUser: User,
     @Body() payload: CreateClientRequestDto,
