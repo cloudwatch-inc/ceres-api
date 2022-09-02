@@ -20,9 +20,9 @@ import { JwtAuthGuard, LocalGuard } from './guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiConsumes('application/x-www-form-urlencoded')
   @HttpCode(200)
   @Post('signin')
-  @ApiConsumes('application/x-www-form-urlencoded')
   @UseGuards(LocalGuard)
   async signin(
     @CurrentUser() user: User,
@@ -35,8 +35,9 @@ export class AuthController {
     return reply.send(user);
   }
 
-  @Post('signup')
   @ApiConsumes('application/x-www-form-urlencoded')
+  @HttpCode(200)
+  @Post('signup')
   async signup(
     @Body() payload: SignupRequestDto,
     @Res({ passthrough: true }) reply: FastifyReply,

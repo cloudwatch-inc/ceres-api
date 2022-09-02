@@ -8,7 +8,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 import { User } from '@core';
 import { CurrentUser } from '@module/auth/decorator';
@@ -31,6 +31,7 @@ export class UserController {
     return user;
   }
 
+  @ApiConsumes('application/x-www-form-urlencoded')
   @Post()
   public async createClient(
     @CurrentUser() currentUser: User,
