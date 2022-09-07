@@ -5,6 +5,7 @@ import {
   Post,
   Res,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -14,9 +15,11 @@ import { AuthService } from './auth.service';
 import { CurrentUser } from './decorator';
 import { SigninRequestDto, SignupRequestDto } from './dto';
 import { JwtAuthGuard, LocalGuard } from './guard';
+import { ResponseTransformInterceptor } from '@common/interceptor';
 
 @ApiTags('auth')
 @Controller({ path: 'auth', version: 'v1' })
+@UseInterceptors(ResponseTransformInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -30,9 +33,9 @@ export class AuthController {
     @Res({ passthrough: true }) reply: FastifyReply,
   ): Promise<User> {
     const res = await this.authService.signin(user);
-
     reply.header('Set-Cookie', [res.accessCookie, res.refreshCookie]);
-    return reply.send(user);
+
+    return user;
   }
 
   @ApiConsumes('application/x-www-form-urlencoded')
@@ -43,9 +46,9 @@ export class AuthController {
     @Res({ passthrough: true }) reply: FastifyReply,
   ): Promise<User> {
     const res = await this.authService.signupAndAuthenticate(payload);
-
     reply.header('Set-Cookie', [res.accessCookie, res.refreshCookie]);
-    return reply.send(res.user);
+
+    return res.user;
   }
 
   @HttpCode(204)
@@ -57,7 +60,5 @@ export class AuthController {
   ): Promise<void> {
     const logOutCookies = await this.authService.getCookiesForLogOut(user.id);
     reply.header('Set-Cookie', logOutCookies);
-
-    return reply.redirect('/test');
   }
 }

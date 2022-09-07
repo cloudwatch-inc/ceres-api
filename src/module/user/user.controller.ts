@@ -3,10 +3,9 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
   Post,
-  Res,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
@@ -15,10 +14,12 @@ import { CurrentUser } from '@module/auth/decorator';
 import { JwtAuthGuard } from '@module/auth/guard';
 import { CreateClientRequestDto } from './component/client/dto';
 import { ClientService } from './component/client';
+import { ResponseTransformInterceptor } from '@common/interceptor';
 
 @ApiTags('users')
 @Controller({ path: 'users', version: 'v1' })
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(ResponseTransformInterceptor)
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -26,8 +27,9 @@ export class UserController {
   ) {}
 
   @Get('me')
-  public async getCurrentUser(@CurrentUser() currentUser: User) {
+  public async getCurrentUser(@CurrentUser() currentUser: User): Promise<User> {
     const user = await this.userService.findByEmail(currentUser.email);
+
     return user;
   }
 
@@ -36,9 +38,9 @@ export class UserController {
   public async createClient(
     @CurrentUser() currentUser: User,
     @Body() payload: CreateClientRequestDto,
-  ) {
-    const client = this.clientService.create(currentUser.id, payload);
+  ): Promise<User> {
+    const user = this.clientService.create(currentUser.id, payload);
 
-    return client;
+    return user;
   }
 }

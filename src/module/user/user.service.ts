@@ -38,7 +38,7 @@ export class UserService {
     const user = await this.em.findOne(
       User,
       { email },
-      { populate: ['client'] },
+      { populate: ['client', 'address'] },
     );
     if (!user) {
       throw new NotFoundException();

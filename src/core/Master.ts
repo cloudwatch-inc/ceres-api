@@ -1,16 +1,16 @@
 import {
   Entity,
-  IdentifiedReference,
-  OneToOne,
   Property,
+  OneToOne,
+  IdentifiedReference,
   Reference,
 } from '@mikro-orm/core';
 
 import { User } from './User';
 import { BaseEntity } from './_BaseEntity';
 
-@Entity({ tableName: 'clients' })
-export class Client extends BaseEntity {
+@Entity({ tableName: 'masters' })
+export class Master extends BaseEntity {
   @Property({ length: 40 })
   firstName!: string;
 
@@ -34,7 +34,7 @@ export class Client extends BaseEntity {
 
   @OneToOne({
     entity: () => User,
-    inversedBy: 'client',
+    inversedBy: 'master',
     owner: true,
     wrappedReference: true,
   })
@@ -54,7 +54,7 @@ export class Client extends BaseEntity {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  constructor(payload: Partial<Client>) {
+  constructor(payload: Partial<Master>) {
     super();
     Object.assign(this, payload);
   }

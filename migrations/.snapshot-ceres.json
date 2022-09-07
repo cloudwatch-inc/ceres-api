@@ -229,8 +229,124 @@
           "nullable": false,
           "mappedType": "date"
         },
-        "address_unit": {
-          "name": "address_unit",
+        "photo": {
+          "name": "photo",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "cover_photo": {
+          "name": "cover_photo",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "masters",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "keyName": "masters_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "user_id"
+          ],
+          "composite": false,
+          "keyName": "masters_user_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "masters_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "masters_user_id_foreign": {
+          "constraintName": "masters_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.masters",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.users",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "middle_name": {
+          "name": "middle_name",
           "type": "varchar(40)",
           "unsigned": false,
           "autoincrement": false,
@@ -239,48 +355,8 @@
           "length": 40,
           "mappedType": "string"
         },
-        "address_street": {
-          "name": "address_street",
-          "type": "varchar(60)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 60,
-          "mappedType": "string"
-        },
-        "address1": {
-          "name": "address1",
-          "type": "varchar(60)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 60,
-          "mappedType": "string"
-        },
-        "address2": {
-          "name": "address2",
-          "type": "varchar(60)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 60,
-          "mappedType": "string"
-        },
-        "suburb": {
-          "name": "suburb",
-          "type": "varchar(40)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 40,
-          "mappedType": "string"
-        },
-        "state": {
-          "name": "state",
+        "last_name": {
+          "name": "last_name",
           "type": "varchar(40)",
           "unsigned": false,
           "autoincrement": false,
@@ -289,25 +365,23 @@
           "length": 40,
           "mappedType": "string"
         },
-        "zip": {
-          "name": "zip",
-          "type": "varchar(40)",
+        "age": {
+          "name": "age",
+          "type": "smallint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 40,
-          "mappedType": "string"
+          "mappedType": "smallint"
         },
-        "country": {
-          "name": "country",
-          "type": "varchar(40)",
+        "bod": {
+          "name": "bod",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 40,
-          "mappedType": "string"
+          "mappedType": "date"
         },
         "photo": {
           "name": "photo",
@@ -376,6 +450,184 @@
             "user_id"
           ],
           "localTableName": "public.clients",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.users",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "address_unit": {
+          "name": "address_unit",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "address_street": {
+          "name": "address_street",
+          "type": "varchar(60)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 60,
+          "mappedType": "string"
+        },
+        "address1": {
+          "name": "address1",
+          "type": "varchar(60)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 60,
+          "mappedType": "string"
+        },
+        "address2": {
+          "name": "address2",
+          "type": "varchar(60)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 60,
+          "mappedType": "string"
+        },
+        "suburb": {
+          "name": "suburb",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "city": {
+          "name": "city",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "state": {
+          "name": "state",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "zip": {
+          "name": "zip",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "address",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "keyName": "address_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "user_id"
+          ],
+          "composite": false,
+          "keyName": "address_user_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "address_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "address_user_id_foreign": {
+          "constraintName": "address_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.address",
           "referencedColumnNames": [
             "id"
           ],

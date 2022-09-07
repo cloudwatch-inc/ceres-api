@@ -5,36 +5,42 @@ import {
   Property,
   Reference,
 } from '@mikro-orm/core';
-
 import { User } from './User';
+
 import { BaseEntity } from './_BaseEntity';
 
-@Entity({ tableName: 'clients' })
-export class Client extends BaseEntity {
+@Entity({ tableName: 'address' })
+export class Address extends BaseEntity {
   @Property({ length: 40 })
-  firstName!: string;
+  address_unit?: string;
+
+  @Property({ length: 60 })
+  address_street?: string;
+
+  @Property({ length: 60 })
+  address1!: string;
+
+  @Property({ length: 60 })
+  address2?: string;
 
   @Property({ length: 40 })
-  middleName?: string;
+  suburb?: string;
 
   @Property({ length: 40 })
-  lastName!: string;
+  city!: string;
 
-  @Property({ columnType: 'smallint' })
-  age!: number;
+  @Property({ length: 40 })
+  state!: string;
 
-  @Property({ columnType: 'date' })
-  bod!: Date;
+  @Property({ length: 40 })
+  zip!: string;
 
-  @Property()
-  photo?: string;
-
-  @Property()
-  coverPhoto?: string;
+  @Property({ length: 40 })
+  country!: string;
 
   @OneToOne({
     entity: () => User,
-    inversedBy: 'client',
+    inversedBy: 'address',
     owner: true,
     wrappedReference: true,
   })
@@ -49,12 +55,7 @@ export class Client extends BaseEntity {
     this.user = Reference.createFromPK(User, userId);
   }
 
-  @Property({ persist: false })
-  getFullName() {
-    return `${this.firstName} ${this.lastName}`;
-  }
-
-  constructor(payload: Partial<Client>) {
+  constructor(payload: Partial<Address>) {
     super();
     Object.assign(this, payload);
   }

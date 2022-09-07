@@ -1,3 +1,4 @@
+import { Role } from './../module/auth/decorator/role.decorator';
 import { UserRole } from '@common/enum';
 import {
   Entity,
@@ -9,8 +10,10 @@ import {
 } from '@mikro-orm/core';
 import { ApiHideProperty } from '@nestjs/swagger';
 
-import { BaseEntity } from './BaseEntity';
+import { BaseEntity } from './_BaseEntity';
 import { Client } from './Client';
+import { Master } from './Master';
+import { Address } from './Address';
 
 @Entity({ tableName: 'users' })
 export class User extends BaseEntity {
@@ -37,7 +40,7 @@ export class User extends BaseEntity {
   hashedRefreshToken?: string;
 
   @OneToOne({ entity: () => Client, mappedBy: 'user', wrappedReference: true })
-  client: IdentifiedReference<Client>;
+  client?: IdentifiedReference<Client>;
 
   getClient() {
     return this.client.load();
@@ -47,7 +50,34 @@ export class User extends BaseEntity {
     this.client = Reference.createFromPK(Client, clientId);
   }
 
-  constructor(payload: Partial<User>) {
+  @OneToOne({
+    entity: () => Master,
+    mappedBy: 'user',
+    wrappedReference: true,
+    hidden: true,
+  })
+  master?: IdentifiedReference<Master>;
+
+  getMaster() {
+    return this.master.load();
+  }
+
+  setMaster(masterId: string) {
+    this.master = Reference.createFromPK(Master, masterId);
+  }
+
+  @OneToOne({ entity: () => Address, mappedBy: 'user', wrappedReference: true })
+  address?: IdentifiedReference<Address>;
+
+  getAddress() {
+    return this.address.load();
+  }
+
+  setAddress(addressId: string) {
+    this.address = Reference.createFromPK(Address, addressId);
+  }
+
+  constructor(payload?: Partial<User>) {
     super();
     Object.assign(this, payload);
   }
