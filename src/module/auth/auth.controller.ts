@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Post,
   Res,
@@ -14,7 +15,7 @@ import { User } from '@core';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorator';
 import { SigninRequestDto, SignupRequestDto } from './dto';
-import { JwtAuthGuard, LocalGuard } from './guard';
+import { JwtAuthGuard, JwtRefreshTokenGuard, LocalGuard } from './guard';
 import { ResponseTransformInterceptor } from '@common/interceptor';
 
 @ApiTags('auth')
@@ -60,5 +61,17 @@ export class AuthController {
   ): Promise<void> {
     const logOutCookies = await this.authService.getCookiesForLogOut(user.id);
     reply.header('Set-Cookie', logOutCookies);
+  }
+
+  @Get('refresh-token')
+  @UseGuards(JwtRefreshTokenGuard)
+  async refresh(
+    @CurrentUser() user: User,
+    @Res({ passthrough: true }) reply: FastifyReply,
+  ): Promise<User> {
+    const accessCookie = await this.authService.getAccessCookie(user);
+    reply.header('Set-Cookie', accessCookie);
+
+    return user;
   }
 }
