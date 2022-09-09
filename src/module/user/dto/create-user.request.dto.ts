@@ -24,6 +24,14 @@ export class CreateUserRequestDto {
   @MinLength(6)
   userName: string;
 
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+
+  @IsString()
+  @IsOptional()
+  phoneRegionCode?: string;
+
   @IsEnum(UserRole)
   @IsOptional()
   role?: UserRole;

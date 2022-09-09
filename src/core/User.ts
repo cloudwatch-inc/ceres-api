@@ -1,4 +1,3 @@
-import { Role } from './../module/auth/decorator/role.decorator';
 import { UserRole } from '@common/enum';
 import {
   Entity,
@@ -17,6 +16,11 @@ import { Address } from './Address';
 
 @Entity({ tableName: 'users' })
 export class User extends BaseEntity {
+  constructor(payload?: Partial<User>) {
+    super();
+    Object.assign(this, payload);
+  }
+
   @Property({ unique: true })
   email!: string;
 
@@ -31,6 +35,12 @@ export class User extends BaseEntity {
 
   @Enum({ items: () => UserRole, default: UserRole.CLIENT })
   role!: UserRole;
+
+  @Property()
+  phone!: string;
+
+  @Property()
+  phoneRegionCode?: string;
 
   @Property({ hidden: true })
   password!: string;
@@ -75,10 +85,5 @@ export class User extends BaseEntity {
 
   setAddress(addressId: string) {
     this.address = Reference.createFromPK(Address, addressId);
-  }
-
-  constructor(payload?: Partial<User>) {
-    super();
-    Object.assign(this, payload);
   }
 }

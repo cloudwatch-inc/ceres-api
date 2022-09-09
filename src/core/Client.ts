@@ -11,6 +11,11 @@ import { BaseEntity } from './_BaseEntity';
 
 @Entity({ tableName: 'clients' })
 export class Client extends BaseEntity {
+  constructor(payload: Partial<Client>) {
+    super();
+    Object.assign(this, payload);
+  }
+
   @Property({ length: 40 })
   firstName!: string;
 
@@ -52,10 +57,5 @@ export class Client extends BaseEntity {
   @Property({ persist: false })
   getFullName() {
     return `${this.firstName} ${this.lastName}`;
-  }
-
-  constructor(payload: Partial<Client>) {
-    super();
-    Object.assign(this, payload);
   }
 }

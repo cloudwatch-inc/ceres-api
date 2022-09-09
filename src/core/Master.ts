@@ -4,13 +4,21 @@ import {
   OneToOne,
   IdentifiedReference,
   Reference,
+  OneToMany,
+  Collection,
 } from '@mikro-orm/core';
+import { MasterExpertise } from './MasterExpertise';
 
 import { User } from './User';
 import { BaseEntity } from './_BaseEntity';
 
 @Entity({ tableName: 'masters' })
 export class Master extends BaseEntity {
+  constructor(payload: Partial<Master>) {
+    super();
+    Object.assign(this, payload);
+  }
+
   @Property({ length: 40 })
   firstName!: string;
 
@@ -27,6 +35,9 @@ export class Master extends BaseEntity {
   bod!: Date;
 
   @Property()
+  isAvailable = true;
+
+  @Property()
   photo?: string;
 
   @Property()
@@ -40,6 +51,16 @@ export class Master extends BaseEntity {
   })
   user!: IdentifiedReference<User>;
 
+  @OneToMany(
+    () => MasterExpertise,
+    (masterExpertise) => masterExpertise.master,
+    {
+      hidden: true,
+      orphanRemoval: true,
+    },
+  )
+  masterExpertises = new Collection<MasterExpertise>(this);
+
   async getUser() {
     const user = await this.user.load();
     return user;
@@ -52,10 +73,5 @@ export class Master extends BaseEntity {
   @Property({ persist: false })
   getFullName() {
     return `${this.firstName} ${this.lastName}`;
-  }
-
-  constructor(payload: Partial<Master>) {
-    super();
-    Object.assign(this, payload);
   }
 }

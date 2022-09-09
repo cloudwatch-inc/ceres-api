@@ -3,3 +3,4 @@ export * from './User';
 export * from './Client';
 export * from './Master';
 export * from './Address';
+export * from './MasterExpertise';

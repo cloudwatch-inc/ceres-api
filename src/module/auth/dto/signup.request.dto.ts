@@ -28,6 +28,14 @@ export class SignupRequestDto {
   @MinLength(6)
   userName: string;
 
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+
+  @IsString()
+  @IsOptional()
+  phoneRegionCode?: string;
+
   @ApiProperty({ enum: UserRole, nullable: true, required: false })
   @Matches(
     `${Object.values(UserRole)

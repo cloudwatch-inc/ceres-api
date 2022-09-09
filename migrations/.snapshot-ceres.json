@@ -88,6 +88,24 @@
           ],
           "mappedType": "enum"
         },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "phone_region_code": {
+          "name": "phone_region_code",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "password": {
           "name": "password",
           "type": "varchar(255)",
@@ -229,6 +247,15 @@
           "nullable": false,
           "mappedType": "date"
         },
+        "is_available": {
+          "name": "is_available",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        },
         "photo": {
           "name": "photo",
           "type": "varchar(255)",
@@ -300,6 +327,152 @@
             "id"
           ],
           "referencedTableName": "public.users",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(100)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 100,
+          "mappedType": "string"
+        },
+        "experience": {
+          "name": "experience",
+          "type": "smallint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "smallint"
+        },
+        "company_name": {
+          "name": "company_name",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "company_address": {
+          "name": "company_address",
+          "type": "varchar(40)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 40,
+          "mappedType": "string"
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "date",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "date"
+        },
+        "ended_at": {
+          "name": "ended_at",
+          "type": "date",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "date"
+        },
+        "master_id": {
+          "name": "master_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "master_expertises",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "keyName": "master_expertises_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "master_expertises_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "master_expertises_master_id_foreign": {
+          "constraintName": "master_expertises_master_id_foreign",
+          "columnNames": [
+            "master_id"
+          ],
+          "localTableName": "public.master_expertises",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.masters",
           "updateRule": "cascade"
         }
       }
