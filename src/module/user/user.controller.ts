@@ -12,9 +12,9 @@ import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { User } from '@core';
 import { CurrentUser } from '@module/auth/decorator';
 import { JwtAuthGuard } from '@module/auth/guard';
-import { CreateClientRequestDto } from './component/client/dto';
-import { ClientService } from './component/client';
 import { ResponseTransformInterceptor } from '@common/interceptor';
+import { CreateUserClientRequestDto } from '@module/user-client/dto';
+import { UserClientService } from '@module/user-client';
 
 @ApiTags('users')
 @Controller({ path: 'users', version: 'v1' })
@@ -23,7 +23,7 @@ import { ResponseTransformInterceptor } from '@common/interceptor';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly clientService: ClientService,
+    private readonly clientService: UserClientService,
   ) {}
 
   @Get('me')
@@ -33,11 +33,19 @@ export class UserController {
     return user;
   }
 
-  @ApiConsumes('application/x-www-form-urlencoded')
+  @Get()
+  @ApiConsumes('application/json')
+  public async getAll() {
+    const users = await this.userService.getAll();
+
+    return users;
+  }
+
   @Post()
+  @ApiConsumes('application/x-www-form-urlencoded')
   public async createClient(
     @CurrentUser() currentUser: User,
-    @Body() payload: CreateClientRequestDto,
+    @Body() payload: CreateUserClientRequestDto,
   ): Promise<User> {
     const user = this.clientService.create(currentUser.id, payload);
 

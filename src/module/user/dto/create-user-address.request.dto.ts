@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateAddressRequestDto {
+export class CreateUserAddressRequestDto {
   @ApiProperty({ nullable: true, required: false })
   @IsOptional()
   @IsString()

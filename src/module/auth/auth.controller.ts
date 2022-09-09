@@ -24,9 +24,9 @@ import { ResponseTransformInterceptor } from '@common/interceptor';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @ApiConsumes('application/x-www-form-urlencoded')
-  @HttpCode(200)
   @Post('signin')
+  @HttpCode(200)
+  @ApiConsumes('application/x-www-form-urlencoded')
   @UseGuards(LocalGuard)
   async signin(
     @CurrentUser() user: User,
@@ -39,9 +39,9 @@ export class AuthController {
     return user;
   }
 
-  @ApiConsumes('application/x-www-form-urlencoded')
-  @HttpCode(200)
   @Post('signup')
+  @HttpCode(200)
+  @ApiConsumes('application/x-www-form-urlencoded')
   async signup(
     @Body() payload: SignupRequestDto,
     @Res({ passthrough: true }) reply: FastifyReply,
@@ -52,8 +52,8 @@ export class AuthController {
     return res.user;
   }
 
-  @HttpCode(204)
   @Post('signout')
+  @HttpCode(204)
   @UseGuards(JwtAuthGuard)
   async signout(
     @CurrentUser() user: User,

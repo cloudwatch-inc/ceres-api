@@ -16,6 +16,12 @@ export class UserService {
     private readonly em: EntityManager,
   ) {}
 
+  async getAll(): Promise<User[]> {
+    return this.userRepository.findAll({
+      filters: ['isActive'],
+    });
+  }
+
   async create(payload: CreateUserRequestDto): Promise<User> {
     const isUsernameAndEmailExists = await this.userRepository.count({
       $or: [{ userName: payload.userName }, { email: payload.email }],
@@ -65,6 +71,24 @@ export class UserService {
     if (!user) {
       throw new NotFoundException();
     }
+    return user;
+  }
+
+  async deleteOneById(id: string): Promise<void> {
+    // hard delete
+    // const user = await this.userRepository.findOneOrFail(id, ['leaves']);
+    // this.userRepository.removeAndFlush(user);
+
+    //soft delete
+    const user = await this.userRepository.findOneOrFail(id);
+    user.deletedAt = new Date();
+    this.userRepository.flush();
+  }
+
+  async restore(id: string): Promise<User> {
+    const user = await this.userRepository.findOneOrFail(id);
+    user.deletedAt = undefined;
+    this.userRepository.flush();
     return user;
   }
 

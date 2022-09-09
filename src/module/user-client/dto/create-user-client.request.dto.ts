@@ -1,4 +1,4 @@
-import { CreateAddressRequestDto } from '@module/user/dto';
+import { CreateUserAddressRequestDto } from '@module/user/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
@@ -9,7 +9,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateClientRequestDto {
+export class CreateUserClientRequestDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -38,5 +38,5 @@ export class CreateClientRequestDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsObject()
-  address: CreateAddressRequestDto;
+  address: CreateUserAddressRequestDto;
 }

@@ -6,6 +6,7 @@ import {
   OneToOne,
   IdentifiedReference,
   Reference,
+  Filter,
 } from '@mikro-orm/core';
 import { ApiHideProperty } from '@nestjs/swagger';
 
@@ -15,6 +16,7 @@ import { Master } from './Master';
 import { Address } from './Address';
 
 @Entity({ tableName: 'users' })
+@Filter({ name: 'isActive', cond: { deletedAt: { $eq: null } } })
 export class User extends BaseEntity {
   constructor(payload?: Partial<User>) {
     super();
@@ -48,6 +50,9 @@ export class User extends BaseEntity {
   @Property({ hidden: true })
   @ApiHideProperty()
   hashedRefreshToken?: string;
+
+  @Property({ type: 'date', nullable: true })
+  deletedAt?: Date;
 
   @OneToOne({ entity: () => Client, mappedBy: 'user', wrappedReference: true })
   client?: IdentifiedReference<Client>;

@@ -30,7 +30,7 @@ export class ResponseTransformInterceptor<T>
           data: data,
         });
       }),
-      catchError(() => throwError(() => new ServiceUnavailableException())),
+      // catchError(() => throwError(() => new ServiceUnavailableException())),
     );
   }
 }

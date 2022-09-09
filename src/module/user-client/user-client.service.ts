@@ -1,14 +1,13 @@
-import { CreateAddressRequestDto } from './../../dto/create-address.request.dto';
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { ConflictException, Injectable } from '@nestjs/common';
 
 import { Address, Client, User } from '@core';
-import { DbException } from '@common/exception';
-import { CreateClientRequestDto } from './dto';
+import { CreateUserClientRequestDto } from './dto';
+import { CreateUserAddressRequestDto } from '@module/user/dto';
 
 @Injectable()
-export class ClientService {
+export class UserClientService {
   constructor(
     @InjectRepository(Client)
     private readonly clientRepository: EntityRepository<Client>,
@@ -27,7 +26,10 @@ export class ClientService {
     return client;
   }
 
-  async create(userId: string, payload: CreateClientRequestDto): Promise<User> {
+  async create(
+    userId: string,
+    payload: CreateUserClientRequestDto,
+  ): Promise<User> {
     const isUserIdExists = await this.findByUserId(userId);
 
     if (Boolean(isUserIdExists)) {
@@ -53,7 +55,7 @@ export class ClientService {
     }
   }
 
-  async createAddress(payload: CreateAddressRequestDto, userId: string) {
+  async createAddress(payload: CreateUserAddressRequestDto, userId: string) {
     try {
       const address = new Address(payload);
       address.setUser(userId);
